@@ -259,4 +259,121 @@ function setActiveNavLink() {
 
 
 
+
+
+
+
+
+
+
+
+// About page specific JavaScript functionality
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the page-specific elements
+    initializeAboutPage();
+});
+
+function initializeAboutPage() {
+    // Add animation to the about cards when they come into view
+    const aboutCards = document.querySelectorAll('.about-card');
+    const testimonialsCards = document.querySelectorAll('.testimonial-card');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    // Initialize Intersection Observer for animations
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all cards and timeline items
+    aboutCards.forEach(card => {
+        observer.observe(card);
+        // Add initial hidden class
+        card.classList.add('hidden');
+    });
+    
+    testimonialsCards.forEach(card => {
+        observer.observe(card);
+        // Add initial hidden class
+        card.classList.add('hidden');
+    });
+    
+    timelineItems.forEach(item => {
+        observer.observe(item);
+        // Add initial hidden class
+        item.classList.add('hidden');
+    });
+    
+    // Add hover effects to testimonial cards
+    testimonialsCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.querySelector('.testimonial-text').classList.add('expanded');
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.querySelector('.testimonial-text').classList.remove('expanded');
+        });
+    });
+    
+    // Make the view source links open in a new tab
+    document.querySelectorAll('.view-source').forEach(link => {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+    });
+}
+
+// Add CSS animation classes
+document.head.insertAdjacentHTML('beforeend', `
+<style>
+    .about-card.hidden,
+    .testimonial-card.hidden,
+    .timeline-item.hidden {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    .about-card.animate,
+    .testimonial-card.animate,
+    .timeline-item.animate {
+        animation: fadeInUp 0.6s forwards;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .testimonial-text {
+        max-height: 100px;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+    
+    .testimonial-text.expanded {
+        max-height: 300px;
+    }
+</style>
+`);
+
+
+
+
+
   
