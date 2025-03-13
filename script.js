@@ -274,14 +274,6 @@ educationCards.forEach((card, index) => {
 
 
 
-
-
-
-
-
-
-
-
 // About page specific JavaScript functionality
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -389,6 +381,490 @@ document.head.insertAdjacentHTML('beforeend', `
 
 
 
+//Script for experience page
 
 
-  
+// Experience page specific JavaScript functionality
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeExperiencePage();
+});
+
+function initializeExperiencePage() {
+    const experienceCards = document.querySelectorAll('.experience-card');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const achievements = document.querySelectorAll('.achievement-item');
+    
+    // Add initial hidden class for fade-in effect
+    experienceCards.forEach(card => card.classList.add('hidden'));
+    timelineItems.forEach(item => item.classList.add('hidden'));
+    achievements.forEach(achievement => achievement.classList.add('hidden'));
+
+    // Trigger animations on page load with delay
+    setTimeout(() => {
+        experienceCards.forEach((card, index) => {
+            setTimeout(() => card.classList.add('animate'), index * 150);
+        });
+
+        timelineItems.forEach((item, index) => {
+            setTimeout(() => item.classList.add('animate'), index * 150);
+        });
+
+        achievements.forEach((achievement, index) => {
+            setTimeout(() => achievement.classList.add('animate'), index * 150);
+        });
+    }, 300); // Slight delay after page load
+
+    // Intersection Observer for scroll-based animations
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    experienceCards.forEach(card => observer.observe(card));
+    timelineItems.forEach(item => observer.observe(item));
+    achievements.forEach(achievement => observer.observe(achievement));
+}
+
+// Add CSS animations dynamically
+const style = document.createElement('style');
+style.innerHTML = `
+    .experience-card.hidden,
+    .timeline-item.hidden,
+    .achievement-item.hidden {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    
+    .experience-card.animate,
+    .timeline-item.animate,
+    .achievement-item.animate {
+        animation: fadeInUp 0.6s forwards;
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+document.head.appendChild(style);
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize stats cards
+    initStatsCards();
+    
+    // Handle theme changes
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            // Update stats cards when theme changes
+            setTimeout(() => {
+                updateStatsCardStyles();
+            }, 100);
+        });
+    }
+});
+
+// Initialize stats cards with animations
+function initStatsCards() {
+    // Animate stat boxes
+    animateStatBoxes();
+    
+    // Add hover effect to stat boxes
+    addStatBoxHoverEffects();
+    
+    // Update stats from placeholder data (would connect to APIs in production)
+    updateStatsPlaceholders();
+}
+
+// Animate stat boxes with a staggered fade-in
+function animateStatBoxes() {
+    const statBoxes = document.querySelectorAll('.stat-box');
+    
+    statBoxes.forEach((box, index) => {
+        // Set initial state
+        box.style.opacity = '0';
+        box.style.transform = 'translateY(10px)';
+        box.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        
+        // Animate with staggered delay
+        setTimeout(() => {
+            box.style.opacity = '1';
+            box.style.transform = 'translateY(0)';
+        }, 50 * index);
+    });
+}
+
+// Add hover effects to stat boxes
+function addStatBoxHoverEffects() {
+    const statBoxes = document.querySelectorAll('.stat-box');
+    
+    statBoxes.forEach(box => {
+        box.addEventListener('mouseenter', function() {
+            const value = this.querySelector('.stat-value');
+            if (value) {
+                value.style.transform = 'scale(1.1)';
+                value.style.transition = 'transform 0.2s ease';
+            }
+        });
+        
+        box.addEventListener('mouseleave', function() {
+            const value = this.querySelector('.stat-value');
+            if (value) {
+                value.style.transform = 'scale(1)';
+            }
+        });
+    });
+}
+
+// Update card styles based on theme
+function updateStatsCardStyles() {
+    const isDarkTheme = document.body.classList.contains('dark-theme');
+    const statBoxes = document.querySelectorAll('.stat-box');
+    
+    statBoxes.forEach(box => {
+        if (isDarkTheme) {
+            box.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+        } else {
+            box.style.backgroundColor = 'rgba(0, 0, 0, 0.05)';
+        }
+    });
+}
+
+// Update stats with placeholder data
+function updateStatsPlaceholders() {
+    // GitHub stats
+    setValueWithCountAnimation('github-repos', 15);
+    setValueWithCountAnimation('github-stars', 28);
+    setValueWithCountAnimation('github-contributions', 342);
+    setValueWithCountAnimation('github-followers', 24);
+    
+    // TryHackMe stats
+    setValueWithCountAnimation('thm-rank', 12458, value => value.toLocaleString());
+    setValueWithCountAnimation('thm-rooms', 37);
+    setValueWithCountAnimation('thm-badges', 8);
+    setValueWithCountAnimation('thm-streak', 15);
+    
+    // HackTheBox stats
+    document.getElementById('htb-rank').textContent = 'Hacker';
+    setValueWithCountAnimation('htb-systems', 18);
+    setValueWithCountAnimation('htb-challenges', 12);
+    setValueWithCountAnimation('htb-points', 250);
+    
+    // HackerRank stats
+    document.getElementById('hr-rank').textContent = '5 ★';
+    setValueWithCountAnimation('hr-problems', 125);
+    setValueWithCountAnimation('hr-certificates', 3);
+    
+    // Set star ratings on badges if they exist
+    const pythonBadge = document.querySelector('.badge-mini.python');
+    if (pythonBadge) {
+        pythonBadge.textContent = 'Python ★★★★★';
+    }
+    
+    const javaBadge = document.querySelector('.badge-mini.java');
+    if (javaBadge) {
+        javaBadge.textContent = 'Java ★★★★☆';
+    }
+}
+
+// Helper function to animate counting up to a value
+function setValueWithCountAnimation(elementId, targetValue, formatFunction) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    // Default format function if none provided
+    formatFunction = formatFunction || (value => value.toString());
+    
+    // Starting from 0
+    let currentValue = 0;
+    const duration = 1500; // ms
+    const frameDuration = 1000 / 60; // 60fps
+    const totalFrames = Math.round(duration / frameDuration);
+    const valueIncrement = targetValue / totalFrames;
+    
+    // Use requestAnimationFrame for smooth animation
+    function updateValue(frame) {
+        currentValue += valueIncrement;
+        
+        if (frame === totalFrames) {
+            currentValue = targetValue;
+        }
+        
+        element.textContent = formatFunction(Math.floor(currentValue));
+        
+        if (frame < totalFrames) {
+            requestAnimationFrame(() => updateValue(frame + 1));
+        }
+    }
+    
+    // Start the animation
+    requestAnimationFrame(() => updateValue(1));
+}
+
+// Function to update stats from APIs (placeholder - would require API implementation)
+function updateStatsFromAPIs() {
+    // GitHub stats API call would go here
+    // Example: fetch('https://api.github.com/users/DularaAbhiranda')
+    //    .then(response => response.json())
+    //    .then(data => {
+    //        setValueWithCountAnimation('github-repos', data.public_repos);
+    //        setValueWithCountAnimation('github-stars', calculateTotalStars(data));
+    //    });
+    
+    // For now, we're using placeholder data in updateStatsPlaceholders()
+    
+    // You can implement actual API calls to:
+    // - GitHub API: https://api.github.com/users/DularaAbhiranda
+    // - TryHackMe API (if available)
+    // - HackTheBox API (if available)
+    // - HackerRank API (if available)
+}
+
+
+
+
+
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the certification slider
+    initCertificationSlider();
+    
+    // Initialize badges with animation
+    initBadgesAnimation();
+});
+
+function initCertificationSlider() {
+    const slider = document.querySelector('.certification-slider');
+    const slides = document.querySelectorAll('.certification-slide');
+    const prevBtn = document.querySelector('.prev-arrow');
+    const nextBtn = document.querySelector('.next-arrow');
+    const dotsContainer = document.querySelector('.slider-dots');
+    
+    if (!slider || !slides.length || !prevBtn || !nextBtn || !dotsContainer) return;
+    
+    let currentIndex = 0;
+    const slideCount = slides.length;
+    
+    // Create dots based on number of slides
+    for (let i = 0; i < slideCount; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (i === 0) dot.classList.add('active');
+        dot.setAttribute('data-index', i);
+        dotsContainer.appendChild(dot);
+        
+        // Add click event to each dot
+        dot.addEventListener('click', function() {
+            goToSlide(parseInt(this.getAttribute('data-index')));
+        });
+    }
+    
+    // Get all dots
+    const dots = document.querySelectorAll('.dot');
+    
+    // Set initial state
+    updateSliderState();
+    
+    // Add click event to previous button
+    prevBtn.addEventListener('click', function() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateSliderState();
+        }
+    });
+    
+    // Add click event to next button
+    nextBtn.addEventListener('click', function() {
+        if (currentIndex < slideCount - 1) {
+            currentIndex++;
+            updateSliderState();
+        }
+    });
+    
+    // Add swipe gestures
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    slider.addEventListener('touchstart', function(event) {
+        touchStartX = event.changedTouches[0].screenX;
+    }, false);
+    
+    slider.addEventListener('touchend', function(event) {
+        touchEndX = event.changedTouches[0].screenX;
+        handleSwipe();
+    }, false);
+    
+    function handleSwipe() {
+        const minSwipeDistance = 50;
+        
+        if (touchEndX < touchStartX - minSwipeDistance) {
+            // Swipe left
+            if (currentIndex < slideCount - 1) {
+                currentIndex++;
+                updateSliderState();
+            }
+        }
+        
+        if (touchEndX > touchStartX + minSwipeDistance) {
+            // Swipe right
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateSliderState();
+            }
+        }
+    }
+    
+    function goToSlide(index) {
+        currentIndex = index;
+        updateSliderState();
+    }
+    
+    function updateSliderState() {
+        // Calculate the scroll position
+        const slideWidth = slider.clientWidth;
+        const scrollPosition = currentIndex * slideWidth;
+        
+        // Scroll to the current slide
+        slider.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+        });
+        
+        // Update active dot
+        dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+        
+        // Show/hide prev/next buttons based on position
+        prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+        prevBtn.style.pointerEvents = currentIndex === 0 ? 'none' : 'auto';
+        
+        nextBtn.style.opacity = currentIndex === slideCount - 1 ? '0.5' : '1';
+        nextBtn.style.pointerEvents = currentIndex === slideCount - 1 ? 'none' : 'auto';
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        setTimeout(updateSliderState, 100);
+    });
+    
+    // Auto-advance the slider every 5 seconds
+    let autoSlideInterval = setInterval(autoAdvance, 5000);
+    
+    function autoAdvance() {
+        if (currentIndex < slideCount - 1) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        updateSliderState();
+    }
+    
+    // Stop auto-advance when user interacts with slider
+    slider.addEventListener('mouseenter', function() {
+        clearInterval(autoSlideInterval);
+    });
+    
+    slider.addEventListener('mouseleave', function() {
+        autoSlideInterval = setInterval(autoAdvance, 5000);
+    });
+    
+    // Pause auto-advance when user is scrolling the page
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        clearInterval(autoSlideInterval);
+        clearTimeout(scrollTimeout);
+        
+        scrollTimeout = setTimeout(function() {
+            autoSlideInterval = setInterval(autoAdvance, 5000);
+        }, 2000);
+    });
+}
+
+function initBadgesAnimation() {
+    // Get all badge items
+    const badges = document.querySelectorAll('.badge-item');
+    
+    if (!badges.length) return;
+    
+    // Add intersection observer to animate badges when they come into view
+    const badgeObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                animateBadgeEntry(entry.target, entries.indexOf(entry));
+                badgeObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.3
+    });
+    
+    // Observe each badge
+    badges.forEach((badge) => {
+        badgeObserver.observe(badge);
+        // Set initial state
+        badge.style.opacity = '0';
+        badge.style.transform = 'translateY(20px)';
+    });
+    
+    function animateBadgeEntry(badge, index) {
+        // Add delay based on index for staggered animation
+        setTimeout(() => {
+            badge.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            badge.style.opacity = '1';
+            badge.style.transform = 'translateY(0)';
+        }, index * 100);
+    }
+    
+    // Add hover effect with subtle rotation animation
+    badges.forEach((badge) => {
+        badge.addEventListener('mouseenter', function() {
+            const img = this.querySelector('img');
+            if (img) {
+                img.style.transition = 'transform 0.5s ease';
+                img.style.transform = 'rotate(10deg) scale(1.1)';
+            }
+        });
+        
+        badge.addEventListener('mouseleave', function() {
+            const img = this.querySelector('img');
+            if (img) {
+                img.style.transition = 'transform 0.5s ease';
+                img.style.transform = 'rotate(0deg) scale(1)';
+            }
+        });
+    });
+}
