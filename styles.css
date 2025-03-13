@@ -12,6 +12,16 @@
     --timeline-date-bg: #333;
     --timeline-circle-bg: white;
     --timeline-circle-border: black;
+    --box-shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --accent-color-light: #2980b9;
+    --divider-light: #e0e0e0;
+    --text-tertiary-light: #777;
+    --text-secondary-light: #555;
+    --text-primary-light: #333;
+    --card-border-hover-light: #ccc;
+    --card-border-light: #e0e0e0;
+    --card-hover-bg-light: #f8f8f8;
+    --card-bg-light: #fff;
 }
 
 * {
@@ -594,3 +604,188 @@ body.light-theme {
         margin-left: 0;
     }
 }
+
+
+
+/* Education hero section */
+.education-hero {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.education-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.education-hero p {
+    font-size: 1.1rem;
+    color: #999;
+}
+
+/* Education grid and cards */
+.education-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.education-card {
+    background-color: #111;
+    border-radius: 10px;
+    border: 1px solid #222;
+    padding: 2rem;
+    display: flex;
+    gap: 1.5rem;
+    transition: transform 0.3s, background-color 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.education-card:hover {
+    transform: translateY(-5px);
+    background-color: #1a1a1a;
+    border-color: #333;
+}
+
+.education-logo {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.education-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: brightness(0.9) contrast(1.1);
+}
+
+/* Adjust logo brightness based on theme */
+body.dark-theme .education-logo img {
+    filter: brightness(0.9) contrast(1.1);
+  }
+  
+  body.light-theme .education-logo img {
+    filter: none; /* No filter needed for light theme */
+  }
+  
+  
+
+.education-details {
+    flex: 1;
+}
+
+.education-details h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+}
+
+.education-details h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0 0 0.5rem 0;
+    color: #bbb;
+}
+
+.education-date {
+    color: #999;
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0.2rem 0;
+}
+
+.education-location {
+    color: #999;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.education-divider {
+    height: 1px;
+    background-color: #333;
+    margin: 1rem 0;
+}
+
+.education-status {
+    color: #3498db; /* Primary blue color */
+    font-weight: 500;
+    margin: 0;
+}
+
+
+
+/* Responsive styles */
+@media (max-width: 1024px) {
+    .education-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .education-hero h1 {
+        font-size: 2rem;
+    }
+    
+    main {
+        padding: 0 1rem 2rem;
+    }
+    
+    .education-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .education-logo {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Light theme container styles */
+body.light-theme .education-card {
+    background-color: var(--card-bg-light);
+    border: 1px solid var(--card-border-light);
+    box-shadow: var(--box-shadow-light);
+  }
+  
+  body.light-theme .education-card:hover {
+    background-color: var(--card-hover-bg-light);
+    border-color: var(--card-border-hover-light);
+  }
+  
+  body.light-theme .education-details h2 {
+    color: var(--text-primary-light);
+  }
+  
+  body.light-theme .education-details h3 {
+    color: var(--text-secondary-light);
+  }
+  
+  body.light-theme .education-date,
+  body.light-theme .education-location {
+    color: var(--text-tertiary-light);
+  }
+  
+  body.light-theme .education-divider {
+    background-color: var(--divider-light);
+  }
+  
+  body.light-theme .education-status {
+    color: var(--accent-color-light);
+  }
+  
+  body.light-theme .education-hero h1 {
+    color: var(--text-primary-light);
+  }
+  
+  body.light-theme .education-hero p {
+    color: var(--text-tertiary-light);
+  }
