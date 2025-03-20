@@ -188,19 +188,77 @@ h1 {
     margin-bottom: 40px;
 }
 
+
 .profile-image {
-    width: 200px;
-    height: 200px;
-    border-radius: 20%;
-    overflow: hidden;
-    margin: 30px auto;
-    border: 5px solid var(--accent-color);
+  width: 200px;
+  height: 200px;
+  border-radius: 20%;
+  overflow: hidden;
+  margin: 30px auto;
+  border: 5px solid var(--accent-color);
+  position: relative;
 }
 
 .profile-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.original-image {
+  z-index: 2;
+}
+
+.hacker-image {
+  z-index: 1;
+}
+
+.glitch-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes flicker {
+  0% { opacity: 0.2; }
+  20% { opacity: 0.3; }
+  40% { opacity: 0.8; }
+  60% { opacity: 0.4; }
+  80% { opacity: 0.2; }
+  100% { opacity: 0.6; }
+}
+
+/* JavaScript will add .glitching class */
+.glitching .glitch-overlay {
+  opacity: 1;
+  background: repeating-linear-gradient(
+    transparent 0%,
+    rgba(0, 255, 0, 0.2) 0.5%,
+    transparent 1%
+  );
+  animation: scanline 8s linear infinite;
+}
+
+.glitching .original-image {
+  animation: flicker 0.2s infinite;
+  opacity: 0.8;
 }
 
 .connect-button {
@@ -1804,4 +1862,172 @@ body.light-theme .slider-arrow:hover {
 
 .light-theme .community-card {
     background-color: rgba(250, 250, 250, 0.9);
+}
+
+
+/* Connect page specific styles */
+.connect-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.connect-section h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.connect-subtitle {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #999;
+}
+
+.connect-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Contact Form Styles */
+.contact-form {
+    width: 100%;
+    background-color: rgba(30, 30, 30, 0.6);
+    border-radius: 8px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: rgba(20, 20, 20, 0.6);
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #4d84e2;
+    box-shadow: 0 0 0 2px rgba(77, 132, 226, 0.3);
+}
+
+.submit-btn {
+    background-color: #4d84e2;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #3a6fc7;
+}
+
+/* Social Connections Styles */
+.social-connections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.social-card {
+    background-color: rgba(30, 30, 30, 0.6);
+    border-radius: 8px;
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+.social-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.social-card i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #4d84e2;
+}
+
+.social-card h3 {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+.social-card p {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Light theme overrides */
+body.light-theme .contact-form,
+body.light-theme .social-card {
+    background-color: rgba(240, 240, 240, 0.8);
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group textarea {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-color: #ddd;
+    color: #333;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+    .connect-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .contact-form {
+        flex: 1;
+    }
+    
+    .social-connections {
+        flex: 1;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .social-connections {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .social-connections {
+        grid-template-columns: 1fr;
+    }
 }
