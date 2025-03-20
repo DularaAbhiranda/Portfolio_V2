@@ -868,3 +868,229 @@ function initBadgesAnimation() {
         });
     });
 }
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const profileImage = document.querySelector('.profile-image');
+    const originalImage = document.querySelector('.original-image');
+    
+    function startGlitch() {
+      // Randomly determine if we should do a minor or major glitch
+      const glitchIntensity = Math.random() > 0.7 ? 'major' : 'minor';
+      
+      // Add glitching class to start the effect
+      profileImage.classList.add('glitching');
+      
+      if (glitchIntensity === 'major') {
+        // For major glitches, show the hacker image by reducing original image opacity
+        originalImage.style.opacity = '0';
+        
+        // Create RGB split effect
+        originalImage.style.transform = `translate3d(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px, 0)`;
+        originalImage.style.filter = `hue-rotate(${Math.random() * 360}deg) saturate(${Math.random() * 5 + 1})`;
+        
+        // After a moment, start bringing back the original image
+        setTimeout(() => {
+          originalImage.style.opacity = '0.3';
+          setTimeout(() => {
+            originalImage.style.opacity = '0.6';
+            setTimeout(() => {
+              // Restore normal
+              endGlitch();
+            }, 300);
+          }, 200);
+        }, 500);
+      } else {
+        // For minor glitches, just do some visual distortion
+        originalImage.style.transform = `translate3d(${Math.random() * 6 - 3}px, ${Math.random() * 6 - 3}px, 0)`;
+        originalImage.style.filter = `brightness(1.2) contrast(1.2)`;
+        
+        // End the minor glitch sooner
+        setTimeout(endGlitch, 300);
+      }
+    }
+    
+    function endGlitch() {
+      profileImage.classList.remove('glitching');
+      originalImage.style.opacity = '';
+      originalImage.style.transform = '';
+      originalImage.style.filter = '';
+    }
+    
+    // Trigger glitch at random intervals
+    function scheduleGlitch() {
+      // Random time between 2 and 10 seconds
+      const nextGlitchTime = Math.random() * 8000 + 2000;
+      
+      setTimeout(() => {
+        startGlitch();
+        scheduleGlitch(); // Schedule the next glitch
+      }, nextGlitchTime);
+    }
+    
+    // Start the random glitch cycle
+    scheduleGlitch();
+    
+    // Also trigger on hover for interactive effect
+    profileImage.addEventListener('mouseenter', startGlitch);
+    profileImage.addEventListener('mouseleave', endGlitch);
+  });
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Form submission handling
+    const submitButton = document.getElementById('submit-form');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const subjectInput = document.getElementById('subject');
+    const messageInput = document.getElementById('message');
+
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Basic form validation
+            if (!nameInput.value.trim()) {
+                showNotification('Please enter your name', 'error');
+                nameInput.focus();
+                return;
+            }
+            
+            if (!emailInput.value.trim()) {
+                showNotification('Please enter your email', 'error');
+                emailInput.focus();
+                return;
+            }
+            
+            if (!isValidEmail(emailInput.value)) {
+                showNotification('Please enter a valid email address', 'error');
+                emailInput.focus();
+                return;
+            }
+            
+            if (!subjectInput.value.trim()) {
+                showNotification('Please enter a subject', 'error');
+                subjectInput.focus();
+                return;
+            }
+            
+            if (!messageInput.value.trim()) {
+                showNotification('Please enter your message', 'error');
+                messageInput.focus();
+                return;
+            }
+            
+            // Simulate form submission success
+            // In a real implementation, you would send this data to a server
+            showNotification('Message sent successfully!', 'success');
+            resetForm();
+        });
+    }
+
+    // Make social cards clickable
+    const socialCards = document.querySelectorAll('.social-card');
+    socialCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const platform = this.querySelector('h3').textContent;
+            const username = this.querySelector('p').textContent;
+            
+            let url;
+            switch(platform) {
+                case 'Email':
+                    url = `mailto:${username}`;
+                    break;
+                case 'X (Twitter)':
+                    url = `https://twitter.com/${username}`;
+                    break;
+                case 'GitHub':
+                    url = `https://github.com/${username}`;
+                    break;
+                case 'YouTube':
+                    url = `https://youtube.com/${username}`;
+                    break;
+                case 'LinkedIn':
+                    url = `https://linkedin.com/${username}`;
+                    break;
+                case 'Instagram':
+                    url = `https://instagram.com/${username}`;
+                    break;
+                default:
+                    return;
+            }
+            
+            window.open(url, '_blank');
+        });
+    });
+
+    // Helper Functions
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function resetForm() {
+        nameInput.value = '';
+        emailInput.value = '';
+        subjectInput.value = '';
+        messageInput.value = '';
+    }
+    
+    function showNotification(message, type) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        
+        // Add to the body
+        document.body.appendChild(notification);
+        
+        // Show notification
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+    }
+});
+
+// Add this to your existing script.js or include it here
+document.addEventListener('DOMContentLoaded', function() {
+    // Add notification styles if not already present in main CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .notification.success {
+            background-color: #4caf50;
+        }
+        
+        .notification.error {
+            background-color: #f44336;
+        }
+    `;
+    document.head.appendChild(style);
+});
